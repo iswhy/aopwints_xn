@@ -22,8 +22,11 @@ with gpw.prepare(mol) as opt:
     gppg_shell = gpw.gppg_by_shell(mol, (0, 1), k[1], kp[1], opt=opt)
     loc = mol.ao_loc_nr()
     a, b, c = (slice(loc[i], loc[i+1]) for i in (0, 1, 2))
+
+    #==== Test if the *_shell arrays are a subarray ====#
     assert np.allclose(gpgg_shell, gpgg[1, a, b, c])
     assert np.allclose(gppg_shell, gppg[1, a, b])
+    
     assert np.allclose(t, .5*(k*k).sum(axis=1)[:, None]*s)
     assert np.array_equal(s[:, :1], gpw.ovlp_by_shell(mol, (0,), k, opt=opt))
     print('S/T/V:', s.shape, t.shape, v.shape)
